@@ -1,5 +1,7 @@
 # heavily based on https://github.com/goldmann/dockerfiles/blob/master/awestruct/Dockerfile
-FROM fedora:latest
+# we need to use a 'jenkins' user to make this easily work with
+# https://wiki.jenkins-ci.org/display/JENKINS/CloudBees+Docker+Custom+Build+Environment+Plugin
+FROM fedora:23
 
 MAINTAINER "Petr Široký <psiroky@redhat.com>"
 
@@ -29,12 +31,12 @@ RUN dnf -y install \
   procps-ng \
 && dnf clean all
 
-RUN useradd -m awestruct
+RUN useradd -m jenkins -u 1000
 
-USER awestruct
-WORKDIR /home/awestruct
+USER jenkins
+WORKDIR /home/jenkins
 
-ENV HOME /home/awestruct
+ENV HOME /home/jenkins
 ENV RUBY_VERSION 2.3.1
 ENV AWESTRUCT_VERSION 0.5.7
 ENV LC_ALL en_US.UTF-8
